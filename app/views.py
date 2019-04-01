@@ -49,7 +49,6 @@ def form_errors(form):
 # The functions below should be applicable to all Flask apps.
 ###
 
-
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
     """Send your static text file."""
@@ -69,6 +68,25 @@ def add_header(response):
     return response
 
 
+
+@app.route("/api/upload",methods=['POST']) 
+def upload():
+    form=UploadForm()
+    if request.method == 'POST'and form.validate_on_submit():
+        Description=request.form['Description']
+        Photo=form.Photo.data 
+        filename=secure_filename(Photo.filename)
+        Photo.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+        return jsonify({"message": "File Upload Successful",
+                 "filename":filename,
+                  "Description":Description 
+        }) 
+    
+    errors=form_errors(form) 
+    return jsonify({
+        "errors":errors
+    })
+    
 @app.errorhandler(404)
 def page_not_found(error):
     """Custom 404 page."""

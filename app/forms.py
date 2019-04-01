@@ -6,6 +6,6 @@ from wtforms import StringField, SelectField, TextAreaField, FileField
 from wtforms.validators import DataRequired, Email 
 
 
-class profile(FlaskForm):
+class UploadForm(FlaskForm):
     Description=TextAreaField('Description',validators=[DataRequired()]) 
     Photo=FileField('Photo',validators=[FileRequired(),FileAllowed(['jpg','png','Images only!'])])
